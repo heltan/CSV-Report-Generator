@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/heltan/CSV-Report-Generator/issues"
   },
-  "homepage": "https://github.com/heltan/CSV-Report-Generator#readme"
+  "homepage": "https://github.com/heltan/CSV-Report-Generator#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
