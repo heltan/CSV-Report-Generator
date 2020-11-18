@@ -1,0 +1,21 @@
+{
+  "name": "CSV-Report-Generator",
+  "version": "1.0.0",
+  "description": "a client-server app that generates CSV reports from JSON data.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heltan/CSV-Report-Generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heltan/CSV-Report-Generator/issues"
+  },
+  "homepage": "https://github.com/heltan/CSV-Report-Generator#readme"
+}
