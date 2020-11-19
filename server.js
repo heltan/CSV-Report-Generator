@@ -26,7 +26,9 @@ app.post('/', (req, res) => {
     let csv = json2csv(obj);
 
     //send it back in the response body
+    //document.getElementById("current").append(csv);
     res.send(csv);
+
 });
 
 //here is a function to concert json to csv and return the csv
