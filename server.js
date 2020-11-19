@@ -52,7 +52,10 @@ let json2csv = (obj) => {
 
   //now we want to take out every key and put it into a string, separated with commas
   let columns = getKeys(obj);
-  columns = returnString;
+  let columns = returnKeys;
+  getRows(obj);
+
+
 };
 
 let returnKeys = '';
@@ -75,14 +78,22 @@ let getKeys = (object) => {
 //get rows function. this will go thru and grab the keyb[value] pair data. it will add a blank comma for missing info
 let getRows = (object) => {
   let currentRow = '';
-  for (let keys in object) {
+    for (let i = 0; i < keysArr.length; i ++) {
+      let currentKey = keysArr[i];
+      if (object[currentKey] && !Array.isArray(object[currentKey]) && typeof object[currentKey] !== 'object') {
+        currentRow += '"' + object[currentKey] + '",';
+      } else if (object[currentKey] === 'undefined' && !Array.isArray(object[currentKey]) && typeof object[currentKey] !== 'object') {
+        currentRow += ',';
+      }
+    }
+    returnRows += currentRow + '\n';
+    for (let keys in object) {
       if (typeof object[keys] === 'object') {
-        for (let i = 0; i < keysArr.length; i++)
         getRows(object[keys]);
       }
-
-  }
-}
+    }
+    return;
+};
 
 
 //testing below a get request to /blah page
