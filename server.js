@@ -13,43 +13,77 @@ app.use(express.static('client'));
 app.listen(port, () => {
     console.log('server running on', port);
 });
+
+//below is my test json object
+/*
+{
+    "employee": {
+        "name":       "bob",
+        "salary":      56000,
+        "married":    true
+    },
+    "employee": {
+        "name":       "alice",
+        "salary":      1,
+        "married":    false
+    }
+}
+*/
 //here when user submits form, it posts to the server
 app.post('/', (req, res) => {
     //req.body.text is the text of the submit input
-    let stringData1 = req.body.text;
-    //convert to JSON
-    stringData1 = JSON.stringify(stringData1);
-    //now we want to convert that input into csv
-    let csvData = json2csv(stringData1);
+    //let str = JSON.stringify(req.body.text);
+
+    //parse the obj into an obj
+    let obj = (req.body.text);
+    obj = JSON.parse(obj);
+
+    json2csv(obj);
+
 
 
 
     //send it back in the response body
-    res.send(req.body);
+    res.send(req.body.text);
 });
 
 //here is a function to concert json to csv and return the csv
-let json2csv = (stringData) => {
-  let string = JSON.parse(stringData);
-  //now we want to take out every key and put it into an array
+let json2csv = (obj) => {
 
-  console.log('string', string);
-
-
+  //now we want to take out every key and put it into a string, separated with commas
+  let columns = getKeys(obj);
+  columns = returnString;
 };
 
-//this function just grabs the keys of an object and puts them into a string that is returned
-let returnString = '';
+let returnKeys = '';
+let returnRows = '';
+let keysArr = [];
+
 let getKeys = (object) => {
   for (let keys in object) {
-    returnString += keys + ',';
+   //only add keys to the returnKeys if it doesn't already exist. no duplicate column names
+    if (!returnKeys.includes(keys.toString())) {
+        returnKeys += '"' + keys+ '"' + ',';
+        keysArr.push(keys);
+    }
     if (typeof object[keys] === 'object') {
       getKeys(object[keys]);
     }
   }
-  return returnString;
-
+  return returnKeys;
 };
+//get rows function. this will go thru and grab the keyb[value] pair data. it will add a blank comma for missing info
+let getRows = (object) => {
+  let currentRow = '';
+  for (let keys in object) {
+      if (typeof object[keys] === 'object') {
+        for (let i = 0; i < keysArr.length; i++)
+        getRows(object[keys]);
+      }
+
+  }
+}
+
 
 //testing below a get request to /blah page
 app.get('/blah', (req, res) => {
