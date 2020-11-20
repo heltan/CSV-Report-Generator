@@ -3,10 +3,38 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <script>
+    
+    
   $('document').ready(function() {
     $('#submit').click(function() {
       //then submit ajax post request
+     
+      let fr = new FileReader();
+      let file = document.getElementById('thefile').files[0];
+      fr.onload = function(event) {
+        let contents = event.target.result;
+        console.log('testing can we read this', contents);
+      }
+      fr.readAsText(file);
+     
+
       $.ajax({
+        url:"/",
+        //data to be sent to the server
+        //can only be a plain object or string or array
+        //maybe i have to stringify it?
+        data: ($("#submit")),
+        //datatype is what we expect back from theserver
+        //we want a csv file but csv isn't in the options for datatype?
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        success: function(e) {
+          console.log('it worked !');
+        },
+        error: function(e) {
+          console.log('no');
+          console.log('data', data);
+        }
 
       });
     });
@@ -18,10 +46,10 @@
   <iframe name="myiframe" src= "http://localhost:3000/" ></iframe>
 
 
-    <form action= '/' method='post' target="myiframe">
+    <form enctype= "multipart/form-data" action= '' method='post' target="myiframe">
 
-        <input name="text" type = 'text'>
-        <input type = 'submit' value = 'submit' id="submit"'>
+        <input name="text" type = 'file' id="thefile">
+        <input type = 'submit' value = 'submit' id="submit">
     </form>
     <h1 id="current">Current CSV</h1>
 

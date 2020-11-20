@@ -20,16 +20,16 @@ app.listen(port, () => {
 app.post('/', (req, res) => {
     //req.body.text is the text of the submit input
     //let str = JSON.stringify(req.body.text);
-
+    console.log('request body', req.body);
     //parse the obj into an obj
-    let obj = (req.body.text);
-    obj = JSON.parse(obj);
-
-    let csv = json2csv(obj);
+    let obj = (req.body);
+    //obj = JSON.parse(obj);
+  
+    //let csv = json2csv(obj);
 
     //send it back in the response body
     //document.getElementById("current").append(csv);
-    res.send(csv);
+    //res.send(csv);
 
 });
 
