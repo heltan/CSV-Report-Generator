@@ -9,34 +9,42 @@
     $('#submit').click(function() {
       //then submit ajax post request
      
-      let fr = new FileReader();
+     
       let file = document.getElementById('thefile').files[0];
-      fr.onload = function(event) {
-        let contents = event.target.result;
-        console.log('testing can we read this', contents);
-      }
-      fr.readAsText(file);
+      //because onload is an async func. we need to call other funcs
+      let getData = (file, cb) => {
+        let fr = new FileReader();
+        fr.onload = function(event) {
+          let contents = event.target.result;
+          contents = JSON.parse(contents); 
+          console.log('testing can we read this', contents);
+          cb(contents);
+        }
+        //we need this readastext or we can't console log the contents
+        fr.readAsText(file);
+      };
+      let postAjax = (data) => {
+        console.log('data', data);
+        $.ajax({
+          type: 'POST',
+          url: '/',
+          dataType: 'json',
+          data: data,
+        });
+      };
+      //below will set the file contents into a 'data' object
+      getData(file, function(e) {
+        
+       
+        console.log('the data', e);
+       
+        //now we use this data object and call the ajax post request
+        postAjax(e);
+      });
+      
      
 
-      $.ajax({
-        url:"/",
-        //data to be sent to the server
-        //can only be a plain object or string or array
-        //maybe i have to stringify it?
-        data: ($("#submit")),
-        //datatype is what we expect back from theserver
-        //we want a csv file but csv isn't in the options for datatype?
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        success: function(e) {
-          console.log('it worked !');
-        },
-        error: function(e) {
-          console.log('no');
-          console.log('data', data);
-        }
-
-      });
+     
     });
   });
   </script>

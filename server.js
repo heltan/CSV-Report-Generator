@@ -4,6 +4,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const { json } = require('express');
 const port = 3000;
 
 
@@ -20,22 +21,33 @@ app.listen(port, () => {
 app.post('/', (req, res) => {
     //req.body.text is the text of the submit input
     //let str = JSON.stringify(req.body.text);
-    console.log('request body', req.body);
+    
     //parse the obj into an obj
     let obj = (req.body);
-    //obj = JSON.parse(obj);
+    //obj = JSON.stringify(obj);
   
-    //let csv = json2csv(obj);
+   
+   // console.log('obj', obj, 'type', typeof obj);
+
+    // for (let keys in obj) {
+    //   console.log('obj keys', keys);
+    // }
+
+    //let newObj = JSON.parse(obj);
+    //console.log('new obj', newObj);
+    let csv = json2csv(obj);
+    console.log('csv', csv);
+
+   
 
     //send it back in the response body
     //document.getElementById("current").append(csv);
-    //res.send(csv);
+    res.send(csv);
 
 });
 
 //here is a function to concert json to csv and return the csv
 let json2csv = (obj) => {
-
   //now we want to take out every key and put it into a string, separated with commas
   let keys = getKeys(obj);
   //now we want to get the rows
@@ -52,21 +64,25 @@ let returnRows = '';
 let keysArr = [];
 
 let getKeys = (object) => {
-  for (let keys in object) {
+  for (let key in object) {
    //only add keys to the returnKeys if it doesn't already exist. no duplicate column names
     let currentRow = '';
-    if (!returnKeys.includes(keys.toString())) {
-        returnKeys += '"' + keys+ '"' + ',';
-        keysArr.push(keys);
-        //now if there is a key and it's not an object, put the value
+    if (!returnKeys.includes(key.toString())) {
+        returnKeys += '"' + key + '"' + ',';
+        keysArr.push(key);
+        
     }
-    if (typeof object[keys] === 'object') {
-      getKeys(object[keys]);
+    if (typeof object[key] === 'object' && !Array.isArray(object[key]) ) {
+      getKeys(object[key]);
+    } else if (Array.isArray(object[key])) {
+      for (let i = 0; i < object[key].length; i++) {
+        getKeys(object[key][i]);
+      }
     }
   }
   return returnKeys;
 };
-//get rows function. this will go thru and grab the keyb[value] pair data. it will add a blank comma for missing info
+//get rows function. this will go thru and grab the key[value] pair data. it will add a blank comma for missing info
 let getRows = (object) => {
   let currentRow = '';
     for (let i = 0; i < keysArr.length; i ++) {
@@ -78,9 +94,13 @@ let getRows = (object) => {
       }
     }
     returnRows += currentRow + '\n';
-    for (let keys in object) {
-      if (typeof object[keys] === 'object') {
-        getRows(object[keys]);
+    for (let key in object) {
+      if (typeof object[key] === 'object' && !Array.isArray(object[key])) {
+        getRows(object[key]);
+      } else if (Array.isArray(object[key])) {
+        for (let i = 0; i < object[key].length; i++ ) {
+          getRows(object[key][i]);
+        }
       }
     }
     return;
