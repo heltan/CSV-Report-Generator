@@ -5,8 +5,9 @@
 
   <script>
     
-    
+
   $('document').ready(function() {
+    let downloadFile;
     $('#submit').click(function(e) {
       //then submit ajax post request
       e.preventDefault();
@@ -33,13 +34,13 @@
           dataType: 'json',
           data: data,
           success: function(dataSuccess) {
-            console.log('line 35', dataSuccess);
+            
             $('#current').html(dataSuccess);
          
           },
           error: function(error) {
-            console.log('failed', error);
-            $('#current').html(error.responseText);
+            
+            downloadFile = error.responseText;
           }
         });
 
@@ -56,6 +57,17 @@
       });
       
     });
+    $('#download-btn').click(function() {
+      if (!downloadFile) {
+        alert('You did not upload a JSON file yet!');
+      } else {
+        //encodeuri? uri is uniform resource identifier. string of characters that identifies a resource
+        //we encode it and then window.open loads a specified resource into the new or existing context window
+        let encodedURI = encodeURI(downloadFile);
+        window.open(encodedURI);
+      }
+
+    });
   });
   </script>
 </head>
@@ -69,7 +81,9 @@
         <input name="text" type = 'file' id="thefile">
         <input type = 'submit' value = 'submit' id="submit">
     </form>
+    
     <h1 id="current">Current CSV</h1>
+    <button id="download-btn">Download CSV here!</button>
 
     
 </body>

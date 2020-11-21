@@ -25,11 +25,13 @@ app.post('/', (req, res) => {
     //parse the obj into an obj
     let obj = (req.body);
     let returnData = changeCSV(obj);
-    console.log('return data', returnData);
+    let csvData = "data:text/csv;charset=utf-8," + returnData;
+   
     //send it back in the response body
    //document.getElementById("current").innerHTML= (csv);
    //$('#current').html(csv);
-   res.send(returnData);
+   //res.send(csvData);
+   res.attachment(`Data.csv`).send(csvData);
    
 
 });
