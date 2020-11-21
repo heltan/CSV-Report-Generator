@@ -11,6 +11,8 @@
     $('#submit').click(function(e) {
       //then submit ajax post request
       e.preventDefault();
+      //remove previous download link if it's there and u submit new function
+      $('#link').remove();
      
      
       let file = document.getElementById('thefile').files[0];
@@ -63,6 +65,8 @@
             if (downloadFile) {
               let encodedURI = encodeURI(downloadFile);
               window.open(encodedURI);
+              //then remove it after you clicked it
+              $('#link').remove();
       }
       
       
