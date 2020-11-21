@@ -63,7 +63,8 @@ let getKeys = (object) => {
   for (let key in object) {
    //only add keys to the returnKeys if it doesn't already exist. no duplicate column names
     let currentRow = '';
-    if (!returnKeys.includes(key.toString())) {
+    //we only want to add the key if the obj[key] doesn't point to another array. such as children key, don't want to add
+    if (!returnKeys.includes(key.toString()) && !Array.isArray(object[key]) && typeof object[key] !== 'object') {
         returnKeys += '"' + key + '"' + ',';
         keysArr.push(key);
         
