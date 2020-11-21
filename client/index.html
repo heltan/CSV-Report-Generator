@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="../server.js"></script>
 
   <script>
     
     
   $('document').ready(function() {
-    $('#submit').click(function() {
+    $('#submit').click(function(e) {
       //then submit ajax post request
+      e.preventDefault();
      
      
       let file = document.getElementById('thefile').files[0];
@@ -17,41 +19,49 @@
         fr.onload = function(event) {
           let contents = event.target.result;
           contents = JSON.parse(contents); 
-          console.log('testing can we read this', contents);
+          
           cb(contents);
         }
         //we need this readastext or we can't console log the contents
         fr.readAsText(file);
       };
       let postAjax = (data) => {
-        console.log('data', data);
+        console.log('line 28');
         $.ajax({
           type: 'POST',
           url: '/',
           dataType: 'json',
           data: data,
+          success: function(dataSuccess) {
+            console.log('line 35', dataSuccess);
+            $('#current').html(dataSuccess);
+         
+          },
+          error: function(error) {
+            console.log('failed', error);
+            $('#current').html(error.responseText);
+          }
         });
+
+
       };
       //below will set the file contents into a 'data' object
       getData(file, function(e) {
-        
-       
-        console.log('the data', e);
-       
         //now we use this data object and call the ajax post request
+        //,then means, once x is done, then do this
         postAjax(e);
+       
+        //console.log('data return', data);
+        //document.getElementById('current').innerHTML = data;
       });
       
-     
-
-     
     });
   });
   </script>
 </head>
 <body>
 
-  <iframe name="myiframe" src= "http://localhost:3000/" ></iframe>
+  <!-- <iframe name="myiframe" src= "/" ></iframe> -->
 
 
     <form enctype= "multipart/form-data" action= '' method='post' target="myiframe">
@@ -61,5 +71,5 @@
     </form>
     <h1 id="current">Current CSV</h1>
 
-    <script src="server.js"></script>
+    
 </body>

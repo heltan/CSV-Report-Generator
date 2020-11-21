@@ -24,27 +24,21 @@ app.post('/', (req, res) => {
     
     //parse the obj into an obj
     let obj = (req.body);
-    //obj = JSON.stringify(obj);
-  
-   
-   // console.log('obj', obj, 'type', typeof obj);
-
-    // for (let keys in obj) {
-    //   console.log('obj keys', keys);
-    // }
-
-    //let newObj = JSON.parse(obj);
-    //console.log('new obj', newObj);
-    let csv = json2csv(obj);
-    console.log('csv', csv);
-
-   
-
+    let returnData = changeCSV(obj);
+    console.log('return data', returnData);
     //send it back in the response body
-    //document.getElementById("current").append(csv);
-    res.send(csv);
+   //document.getElementById("current").innerHTML= (csv);
+   //$('#current').html(csv);
+   res.send(returnData);
+   
 
 });
+let changeCSV = function (json) {
+  let csv = json2csv(json);
+ 
+  return csv;
+
+}
 
 //here is a function to concert json to csv and return the csv
 let json2csv = (obj) => {
@@ -112,52 +106,4 @@ app.get('/blah', (req, res) => {
   console.log('asdfasdlkfja');
   res.send('you tried to reach this page?');
 });
-//test object below
-let obj = {
-  "firstName": "Joshie",
-  "lastName": "Wyattson",
-  "county": "San Mateo",
-  "city": "San Mateo",
-  "role": "Broker",
-  "sales": 1000000,
-  "children": [
-  {
-    "firstName": "Beth Jr.",
-    "lastName": "Johnson",
-    "county": "San Mateo",
-    "city": "Pacifica",
-    "role": "Manager",
-    "sales": 2900000,
-    "children": [
-      {
-        "firstName": "Smitty",
-        "lastName": "Won",
-        "county": "San Mateo",
-        "city": "Redwood City",
-        "role": "Sales Person",
-        "sales": 4800000,
-        "children": []
-      },
-      {
-        "firstName": "Allen",
-        "lastName": "Price",
-        "county": "San Mateo",
-        "city": "Burlingame",
-        "role": "Sales Person",
-        "sales": 2500000,
-        "children": []
-      }
-    ]
-  },
-  {
-    "firstName": "Beth",
-    "lastName": "Johnson",
-    "county": "San Francisco",
-    "city": "San Francisco",
-    "role": "Broker/Sales Person",
-    "sales": 7500000,
-    "children": []
-  }
-]
-};
-//json2csv(obj);
+
