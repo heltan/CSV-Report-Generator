@@ -51,22 +51,24 @@
         //now we use this data object and call the ajax post request
         //,then means, once x is done, then do this
         postAjax(e);
-       
-        //console.log('data return', data);
-        //document.getElementById('current').innerHTML = data;
-      });
+        //now add the new download link to the page
+        $('#download-link')
+        .append('<p id=link><u>click here to download your file</u><p>');
+        //add hover item so user can see it's a link
+        $('#link').hover(function() {
+          $(this).css('cursor', 'pointer');
+        });
+        //now we let the download happen from clicking the link
+          $('#link').click(function() {
+            if (downloadFile) {
+              let encodedURI = encodeURI(downloadFile);
+              window.open(encodedURI);
+      }
+      
       
     });
-    $('#download-btn').click(function() {
-      if (!downloadFile) {
-        alert('You did not upload a JSON file yet!');
-      } else {
-        //encodeuri? uri is uniform resource identifier. string of characters that identifies a resource
-        //we encode it and then window.open loads a specified resource into the new or existing context window
-        let encodedURI = encodeURI(downloadFile);
-        window.open(encodedURI);
-      }
-
+      });
+      
     });
   });
   </script>
@@ -83,7 +85,10 @@
     </form>
     
     <h1 id="current">Current CSV</h1>
-    <button id="download-btn">Download CSV here!</button>
+  
+    <div id="download-link">
+
+    </div>
 
     
 </body>
