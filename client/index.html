@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="../server.js"></script>
+  
 
   <script>
     
@@ -29,20 +29,30 @@
         fr.readAsText(file);
       };
       let postAjax = (data) => {
-        console.log('line 28');
+        console.log('going into post ajax func');
         $.ajax({
           type: 'POST',
           url: '/',
-          dataType: 'json',
+       
+          //dataType: 'json',
+          //we are not sending back json so we don't need this. there is default datatype
+          // we told jquery 'we will get json back'
+          //we didn't get json
+          //common issue is encoding type
+          //if u get empty object but u were sending, probably encoding mismatch 
+          //default usually utf-8. aplication wutrl utf8
+          //if i get buffer, need to add utf-8 somehwere
+          //cut new branch, go back to blank repo and do this one again
+
           data: data,
           success: function(dataSuccess) {
-            
-            $('#current').html(dataSuccess);
+       
+            downloadFile = dataSuccess;
          
           },
           error: function(error) {
+            alert('Something went wrong! Please try again.');
             
-            downloadFile = error.responseText;
           }
         });
 

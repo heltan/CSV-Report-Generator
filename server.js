@@ -26,12 +26,16 @@ app.post('/', (req, res) => {
     let obj = (req.body);
     let returnData = changeCSV(obj);
     let csvData = "data:text/csv;charset=utf-8," + returnData;
-   
+   //we only communicate to server from client with http request
+   //no need for script
+   //unless there is a js bundle that will run on html
     //send it back in the response body
    //document.getElementById("current").innerHTML= (csv);
    //$('#current').html(csv);
    //res.send(csvData);
-   res.attachment(`Data.csv`).send(csvData);
+  //res.attachment(`Data.csv`).send(csvData);
+  res.attachment('Data.csv').send(csvData);
+  
    
 
 });
